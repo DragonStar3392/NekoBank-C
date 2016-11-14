@@ -14,5 +14,7 @@ Note: currently in bug testing stage.
 Changelog:
 
 Able to deposit large numbers.
+
 Limit how many characters are given in the input.
+
 Able to return from login screen to  main screen.
