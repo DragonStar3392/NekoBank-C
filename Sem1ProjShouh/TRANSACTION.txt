@@ -1,4 +1,7 @@
-ALPHA CashWithdrawnFrom ALPHA 1000.00 11/13/16 20:08:41
-ALPHA CashDepositedTo ALPHA 1000.00 11/13/16 20:15:55
-NEKO CashDepositedTo ALPHA 10.00 11/13/16 21:44:42
-NEKO CashWithdrawnFrom ALPHA 10.00 11/13/16 21:44:55
+Neko CashDepositedTo Neko 40.00 11/14/16 15:06:46
+Neko CashDepositedTo Neko 50.00 11/14/16 15:08:13
+Neko CashWithdrawnFrom Neko 50.00 11/14/16 15:17:01
+Beta CashDepositedTo Beta 5000.00 11/14/16 15:27:36
+poom CashDepositedTo poom 1000.00 11/14/16 15:28:31
+poom CashWithdrawnFrom poom 500.00 11/14/16 15:29:21
+Beta CashDepositedTo Beta 6000.00 11/14/16 16:45:19
