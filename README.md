@@ -9,6 +9,8 @@ PS: If want to try, download the entire folder, not one file missing. Not this r
 
 PSS: Will appreciate if there are any bug reports, if not, the program is good to go.
 
+PSSS: Warning: It will only run/work on windows, sorri Mac users.
+
 Note: currently in bug testing stage.
 
 Changelog:
