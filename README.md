@@ -11,7 +11,7 @@ PSS: Will appreciate if there are any bug reports, if not, the program is good t
 
 PSSS: Warning: It will only run/work on windows, sorri Mac users.
 
-Note: currently in bug testing stage.
+Note: currently in bug testing stage and download the first set, the second one is the folder inside the first which contains the same files.
 
 Changelog:
 
