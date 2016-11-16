@@ -1,6 +1,6 @@
 # sem1-proj-year-1
 
-NekoBank V1.0.1
+NekoBank V1.0.5
 Simulating a dumbed-down ATM in C programming.
 
 Created as a project for Year 1 Semester 1 project in KMITL
