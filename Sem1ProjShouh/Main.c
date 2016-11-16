@@ -83,7 +83,7 @@ void customer() {
 	int i;
 	//Log in Screen begins...
 
-	char pass[30], passwrd[50] = { 0 }, id[10], nam[30],ch;
+	char pass[30], passwrd[50] = { 0 }, id[10], nam[30], ch;
 	int c = 0, cnt = 0;
 	char ex, stime[9], etime[9];
 
@@ -244,7 +244,7 @@ void uptodate() {
 			n2 = no_of_yr * 365 + no_of_month * 30 + no_of_days;//n2 is no. of days elasped on last updated date
 
 			strcpy(date, save.u_date);
-			fprintf(fp1, "%s %s %s %s\n", save.uid, save.name, save.money, save.u_date);
+			fprintf(fp1, "%s %s %s %s\n", save.uid, save.name, save.money, _strdate(date));
 
 		}
 
@@ -259,8 +259,8 @@ void uptodate() {
 
 void user_register() {
 	struct user regist;
-	char ch;
-	char passwrd[50] = { 0 }, password[30], nam[50], namR[30], origi[30];
+	char ch, ch2;
+	char passwrd[50] = { 0 }, password[30], nam[50];
 	int c = 0, cnt = 0;
 	regist.money2 = 0.00;
 
@@ -274,70 +274,76 @@ void user_register() {
 
 			ch = _getche();
 			if (ch == 'Y' || ch == 'y') {
-
-				system("cls");
-				rectangle(10, 8, 70, 15);
-				gotoxy(7, 5); printf("Making new user: ");
-				gotoxy(23, 10); printf("Enter User name : "); scanf("%s", nam);
-				if (strlen(nam) > 30) {
-					gotoxy(7, 10); printf("Username characters exceeds the limit.");
-					_getch();
-					break;
-				}
-				strcpy(origi, nam);
-
-				gotoxy(23, 12); printf("Password        : ");
-				char passwrd[50] = { 0 };//To nullify the string password
-				_password(passwrd);
-				strcpy(password, passwrd);
-				if (strlen(password) > 30) {
-					gotoxy(7, 10); printf("Username characters exceeds the limit.");
-					_getch();
-					break;
-				}
-
-				fp = fopen("USER.txt", "r");
-				if (fp == NULL) strcpy(regist.uid, "U01");//if "ACCOUNT.txt" does not exist i.e. there are no records at all then A/C no. is taken U01 for 1st rec
-				else //otherwise a/c no of last record is accessed and increased by unit value which becomes the new a/c no.
-				{
-					while (fscanf(fp, "%s%*c%s%*c%s\n", regist.uid, regist.name, regist.password) != EOF) {
-						strcpy(namR, _strupr(regist.name));
-						if (strcmp(namR, nam) == 0) {//checks for same username
-							c = 0;
-						}
-						else
-							c = 1;
-					}
-					increase(regist.uid);//function increase number
-				}
-				fclose(fp);
-
-				if (c == 0) {
+				while (1) {
 					system("cls");
-					gotoxy(20, 10); printf("Invalid Username, press any key to continue...\a");
+					rectangle(10, 8, 70, 15);
+					gotoxy(7, 5); printf("Making new user: ");
+					gotoxy(7, 6); printf("Press R to return, else to continue");
+					ch = _getch();
+					if (ch == 'R' || ch == 'r') {
+						return;
+					}
+					gotoxy(23, 10); printf("Enter User name : "); scanf("%s", nam);
+					if (strlen(nam) > 30) {
+						gotoxy(7, 10); printf("Username characters exceeds the limit.");
+						_getch();
+						break;
+					}
+					strcpy(nam, nam);
+
+					gotoxy(23, 12); printf("Password        : ");
+					char passwrd[50] = { 0 };//To nullify the string password
+					_password(passwrd);
+					strcpy(password, passwrd);
+					if (strlen(password) > 30) {
+						gotoxy(7, 10); printf("Username characters exceeds the limit.");
+						_getch();
+						break;
+					}
+
+					fp = fopen("USER.txt", "r");
+					if (fp == NULL) strcpy(regist.uid, "U01");//if "ACCOUNT.txt" does not exist i.e. there are no records at all then A/C no. is taken U01 for 1st rec
+					else //otherwise a/c no of last record is accessed and increased by unit value which becomes the new a/c no.
+					{
+						while (fscanf(fp, "%s%*c%s%*c%s\n", regist.uid, regist.name, regist.password) != EOF) {
+							if (strcmp(regist.name, nam) == 0) {//checks for same username
+								c = 0;
+							}
+							else
+								c = 1;
+						}
+						increase(regist.uid);//function increase number
+					}
+					fclose(fp);
+
+					if (c == 0) {
+						system("cls");
+						gotoxy(20, 10); printf("Invalid Username, press any key to continue...\a");
+						_getche();
+						return;
+					}
+
+					fp = fopen("USER.txt", "a");
+					fprintf(fp, "%s%c%s%c%s\n", regist.uid, ' ', nam, ' ', password);
+					fclose(fp);
+
+					fp = fopen("ACCOUNT.txt", "a");
+					fprintf(fp, "%s %s %.2f %s\n", regist.uid, nam, regist.money2, date);
+					fclose(fp);
+
+					system("cls");
+					gotoxy(15, 8); printf("Guuddojobbu!");
+					gotoxy(15, 10); printf("Account creation successful! Press any key to continue...\a");
 					_getche();
 					return;
+
+
 				}
-
-				fp = fopen("USER.txt", "a");
-				fprintf(fp, "%s%c%s%c%s\n", regist.uid, ' ', origi, ' ', password);
-				fclose(fp);
-
-				fp = fopen("ACCOUNT.txt", "a");
-				fprintf(fp, "%s %s %.2f %s\n", regist.uid, nam, regist.money2, date);
-				fclose(fp);
-
-				system("cls");
-				gotoxy(15, 8); printf("Guuddojobbu!");
-				gotoxy(15, 10); printf("Account creation successful! Press any key to continue...\a");
-				_getche();
-				return;
 
 			}
 			else if (ch == 'N' || ch == 'n')
 				return;
 			else {
-				gotoxy(15, 10); printf("What are you even trying? nyaa?");
 				_getch();
 			}
 		}
@@ -419,7 +425,6 @@ void deposit() {
 				if (strcmp(save.name, acn) == 0) {
 					save.money2 += amt;//balance is increased
 					fprintf(fp1, "%s %s %.2lf %s\n", save.uid, save.name, save.money2, date);
-					break;
 				}
 				else {
 					fprintf(fp1, "%s %s %.2lf %s\n", save.uid, save.name, save.money2, date);
@@ -456,7 +461,7 @@ void deposit() {
 			system("cls");
 			gotoxy(25, 10); printf("Invalid input!");
 			_getche();
-			
+			return;
 		}
 	}
 }
@@ -512,7 +517,6 @@ void withdraw() {
 					if (save.money2 >= amt) {
 						save.money2 -= amt;//balance is decreased
 						fprintf(fp1, "%s %s %.2lf %s\n", save.uid, save.name, save.money2, date);
-						break;
 					}
 					else {
 						gotoxy(8, 20); printf("Unable to withdraw due to the withdraw exceeds what is in the account.");
@@ -555,7 +559,7 @@ void withdraw() {
 			title();
 			gotoxy(25, 10); printf("Invalid input!");
 			_getch();
-			while (getchar() != '\n');
+			return;
 		}
 	}
 }
@@ -629,7 +633,7 @@ void welcome()
 	int i;
 	system("cls");
 	rectangle(0, 0, 80, 23);
-	gotoxy(23, 4); printf("NekoBank V1.0.0 (ATM Simulator)");
+	gotoxy(23, 4); printf("NekoBank V1.0.5 (ATM Simulator)");
 	gotoxy(23, 5); for (i = 0; i<31; i++) printf("%c", 196);
 	gotoxy(25, 8); printf("Designed and Programmed by:");
 	gotoxy(25, 9); for (i = 0; i<27; i++) printf("%c", 196);
@@ -640,7 +644,7 @@ void welcome()
 	gotoxy(23, 16); printf("Puck GUI, looks better like this.");
 	gotoxy(31, 17); printf("Nyaaa, welcome! :3");
 
-	gotoxy(30, 19); printf("%c By creator in 2016",153);
+	gotoxy(30, 19); printf("%c By creator in 2016", 153);
 	gotoxy(24, 20); printf("Press Any key to continue...");
 
 
@@ -648,7 +652,7 @@ void welcome()
 
 }
 
-void date_input(char date[]) // dd/mm/yyyy ----> mm/dd/yy
+/*void date_input(char date[]) // dd/mm/yyyy ----> mm/dd/yy
 {
 	char temp[15];
 
@@ -662,9 +666,9 @@ void date_input(char date[]) // dd/mm/yyyy ----> mm/dd/yy
 	temp[2] = temp[5] = '/';
 
 	strcpy(date, temp);
-}
+}*/
 
-void date_output(char date[]) //mm/dd/yy ---> dd MMM, yyyy
+void date_output(char date[]) //mm/dd/yy ---> dd mm, yyyy
 {
 	struct
 	{
@@ -713,7 +717,7 @@ void date_output(char date[]) //mm/dd/yy ---> dd MMM, yyyy
 	strcpy(date, temp);
 }
 
-int date_check(char _date[]) //_date[] is in format dd/mm/yyyy
+/*int date_check(char _date[]) //_date[] is in format dd/mm/yyyy
 {
 	int err = 0, mm, dd, yyyy;
 	if (strlen(_date) != 10) err++;
@@ -748,7 +752,7 @@ int date_check(char _date[]) //_date[] is in format dd/mm/yyyy
 	else
 		return 0;
 
-}
+}*/
 
 void printfcomma(double n) {
 	int x;
@@ -878,7 +882,7 @@ void title() {
 
 	rectangle(0, 0, 80, 23);
 	gotoxy(25, 1);
-	printf("NekoBank V1.0.0 (ATM Simulator)");
+	printf("NekoBank V1.0.5 (ATM Simulator)");
 	gotoxy(5, 3);
 	printf("Current User : %s", account.name);
 	printf("\t\t\t\tDate : ");
